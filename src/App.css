@@ -1,0 +1,107 @@
+/* Basic reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.App {
+  width: 100%;
+  max-width: 600px;
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.App-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+h1 {
+  font-size: 2rem;
+  color: #333;
+}
+
+input[type="file"] {
+  display: block;
+  margin: 20px auto;
+  font-size: 16px;
+}
+
+input[type="number"] {
+  display: inline-block;
+  margin: 10px 10px;
+  padding: 10px;
+  font-size: 16px;
+  width: 45%;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+button {
+  padding: 12px 20px;
+  background-color: #007bff;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 15px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+button:active {
+  background-color: #00408d;
+}
+
+div {
+  margin-top: 30px;
+}
+
+img {
+  max-width: 100%;
+  border-radius: 5px;
+}
+
+a {
+  text-decoration: none;
+  display: inline-block;
+  margin-top: 15px;
+}
+
+a button {
+  width: auto;
+  background-color: #28a745;
+  margin-top: 10px;
+}
+
+a button:hover {
+  background-color: #218838;
+}
+
+a button:active {
+  background-color: #1e7e34;
+}
+
+h3 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 15px;
+}
