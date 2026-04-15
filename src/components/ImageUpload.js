@@ -6,14 +6,31 @@ const ImageUpload = () => {
   const [compressedImage, setCompressedImage] = useState(null);
   const [width, setWidth] = useState('');
   const [height, setHeight] = useState('');
+  const [loading, setLoading] = useState(false);  // ✅ Added
+  const [error, setError] = useState(null);        // ✅ Added
 
-  const handleDownload = () => {
+const handleDownload = async () => {
+  try {
+    // Fetch the image as a blob
+    const response = await fetch(compressedImage);
+    const blob = await response.blob();
+
+    // Create a local object URL from the blob
+    const blobUrl = URL.createObjectURL(blob);
+
     const link = document.createElement('a');
-    link.href = compressedImage;
-    link.download = 'compressed-image.jpg'; // Optional: Customize the filename here
+    link.href = blobUrl;
+    link.download = 'compressed-image.jpg';
+    document.body.appendChild(link); // ✅ Must be in DOM for Firefox
     link.click();
-  };
+    document.body.removeChild(link); // ✅ Clean up
 
+    URL.revokeObjectURL(blobUrl); // ✅ Free memory
+  } catch (error) {
+    console.error('Download failed:', error);
+    alert('Download failed. Please try again.');
+  }
+};
   const handleFileChange = (e) => {
     setSelectedFile(e.target.files[0]);
   };
@@ -23,6 +40,9 @@ const ImageUpload = () => {
       alert('Please select a file and specify both width and height.');
       return;
     }
+
+    setLoading(true);   // ✅ Added
+    setError(null);     // ✅ Added
 
     const formData = new FormData();
     formData.append('image', selectedFile);
@@ -37,13 +57,17 @@ const ImageUpload = () => {
           }
         }
       );
-      setCompressedImage(`http://localhost:5000/${response.data.path}`);
+
+      // ✅ Fixed: was `http://localhost:5000/${response.data.path}` causing double slash
+      setCompressedImage(response.data.url);
+
     } catch (error) {
       console.error('Error uploading the image:', error);
+      setError('Upload failed. Please try again.'); // ✅ Added
+    } finally {
+      setLoading(false); // ✅ Added
     }
   };
-
-  
 
   return (
     <div>
@@ -60,14 +84,20 @@ const ImageUpload = () => {
         value={height}
         onChange={(e) => setHeight(e.target.value)}
       />
-      <button onClick={handleUpload}>Upload & Compress</button>
+
+      {/* ✅ Fixed: Button disabled during upload */}
+      <button onClick={handleUpload} disabled={loading}>
+        {loading ? 'Uploading...' : 'Upload & Compress'}
+      </button>
+
+      {/* ✅ Added: Show error message */}
+      {error && <p style={{ color: 'red' }}>{error}</p>}
 
       {compressedImage && (
         <div>
           <h3>Compressed Image:</h3>
           <img src={compressedImage} alt="Compressed" style={{ maxWidth: '300px' }} />
           <br />
-          {/* Clickable Download Link */}
           <button onClick={handleDownload}>Download</button>
         </div>
       )}
